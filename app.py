@@ -1,34 +1,29 @@
-import csv
 import nltk
 import logging
 import operator
+import pandas as pd
 
-from nltk.tokenize import RegexpTokenizer, word_tokenize
+from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from gensim.models import Word2Vec
 
 nltk.download(['punkt', 'stopwords'])
 logging.basicConfig(level=logging.INFO)
 
-tokenizer = RegexpTokenizer(r'\w+')
+data_file = 'data/rnnDataset.csv'
 unknown_token = 'UNK'
 
 
 def run():
-    data_file = open('data/rnnDataset.csv')
-    data = csv.reader(data_file, delimiter='\n')
+    data = pd.read_csv(data_file, engine='python')
     tokens = []
 
-    logging.info(f'Generating alpha-numeric tokens from {data_file.name}...')
-    for line in data:
+    logging.info(f'Generating alphabetic tokens from {data_file}...')
+    for (num, line) in data.iterrows():
         string = str(line[0])
         tokens.append(
-            # [x.lower() for x in filter(lambda x: x.isalnum(), word_tokenize(string))]
-            # [x.lower() for x in filter(lambda x: tokenizer.tokenize(x), word_tokenize(string))]
-            # tokenizer.tokenize(string)
+            [x.lower() for x in word_tokenize(string)]
         )
-
-    print(tokens)
 
     logging.info('Calculating Frequency of tokens...')
     word_to_freq = {}
@@ -56,10 +51,11 @@ def run():
         temp_sentence.append('END')
         tokens[i] = temp_sentence
 
-    print(tokens)
+    logging.info(f'Here are 10 example tokenized input strings: {[tokens[i] for i in range(10)]}')
 
     model = Word2Vec(tokens, min_count=1, size=100, window=5)
-    print(model)
+
+    logging.info(f'Here are 10 example embedded strings: {[model.wv[word] for word in tokens[i] for i in range(10)]}')
 
 
 if __name__ == '__main__':
