@@ -7,6 +7,8 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from gensim.models import Word2Vec
 
+from model import ExampleGenerator, RNNModel
+
 nltk.download(['punkt', 'stopwords'])
 logging.basicConfig(level=logging.INFO)
 
@@ -57,6 +59,13 @@ def run():
 
     logging.info(f'Here are 10 example embedded strings: {[model.wv[word] for word in tokens[i] for i in range(10)]}')
 
+    example_generator = ExampleGenerator(model, tokens)
+    RNN = RNNModel(5, vocab)
+
+    for i in range(5):
+        example = example_generator()
+        RNN(example)
+        
 
 if __name__ == '__main__':
     run()
