@@ -14,6 +14,7 @@ logging.basicConfig(level=logging.INFO)
 
 data_file = 'data/rnnDataset.csv'
 unknown_token = 'UNK'
+vector_size = 10
 
 
 def run():
@@ -55,12 +56,12 @@ def run():
 
     logging.info(f'Here are 10 example tokenized input strings: {[tokens[i] for i in range(10)]}')
 
-    model = Word2Vec(tokens, min_count=1, size=100, window=5)
+    model = Word2Vec(tokens, min_count=1, size=vector_size, window=5)
 
     logging.info(f'Here are 10 example embedded strings: {[model.wv[word] for word in tokens[i] for i in range(10)]}')
 
     example_generator = ExampleGenerator(model, tokens)
-    RNN = RNNModel(5, vocab)
+    RNN = RNNModel(vector_size, vector_size, vocab)
 
     for i in range(5):
         example = example_generator()
