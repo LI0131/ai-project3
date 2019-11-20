@@ -24,7 +24,9 @@ def run():
     logging.info('Init Model')
     model = tf.keras.Sequential([
         tf.keras.layers.Embedding(VOCAB_SIZE, 64),
-        tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE, recurrent_dropout=DROP_OUT_RATE),
+        tf.keras.layers.Bidirectional(
+            tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE, recurrent_dropout=DROP_OUT_RATE)
+        ),
         tf.keras.layers.Dense(1, activation='sigmoid'),
     ])
 
