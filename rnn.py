@@ -14,7 +14,7 @@ BATCH_SIZE = os.environ.get('BATCH_SIZE', 64)
 VOCAB_SIZE = os.environ.get('VOCAB_SIZE', 20000)
 
 
-def run():
+def run(bidirectional=False, deepdeep=False):
     logging.info('Pulling data from Keras')
     (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=VOCAB_SIZE)
 
@@ -22,13 +22,19 @@ def run():
     x_test = sequence.pad_sequences(x_test)
 
     logging.info('Init Model')
-    model = tf.keras.Sequential([
-        tf.keras.layers.Embedding(VOCAB_SIZE, 64),
-        tf.keras.layers.Bidirectional(
-            tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE, recurrent_dropout=DROP_OUT_RATE)
-        ),
-        tf.keras.layers.Dense(1, activation='sigmoid'),
-    ])
+    model = tf.keras.Sequential()
+    model.add(tf.keras.layers.Embedding(VOCAB_SIZE, 64))
+    if bidirectional:
+        model.add(
+            tf.keras.layers.Bidirectional(
+                tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE, return_sequences=True)
+            )
+        )
+    else:
+        model.add(tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE, return_sequences=True))
+    if deepdeep:
+        model.add(tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE))
+    model.add(tf.keras.layers.Dense(1, activation='sigmoid'))
 
     model.compile(
         loss=LOSS_FUNCTION,
@@ -51,4 +57,14 @@ def run():
 
 
 if __name__ == '__main__':
+    logging.info('STARTING Standard RNN...')
     run()
+    
+    logging.info('STARTING Bidirectional RNN...')
+    run(bidirectional=True)
+
+    logging.info('STARTING Deep Deep RNN...')
+    run(deepdeep=True)
+
+    logging.info('STARTING Bidirectional Deep Deep RNN...')
+    run(bidirectional=True, deepdeep=True)
