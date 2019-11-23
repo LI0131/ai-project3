@@ -1,0 +1,54 @@
+INFO:root:STARTING Standard RNN...
+INFO:root:Pulling data from Keras
+INFO:root:Init Model
+INFO:root:Begin Training
+INFO:root:STARTING Standard RNN...
+INFO:root:Pulling data from Keras
+INFO:root:Init Model
+INFO:root:Begin Training
+INFO:root:Test score: 0.32760269020557403
+INFO:root:Test accuracy: 0.8727200031280518
+INFO:root:STARTING Bidirectional RNN...
+INFO:root:Pulling data from Keras
+INFO:root:Init Model
+INFO:root:Begin Training
+INFO:root:Test score: 0.33592858194351194
+INFO:root:Test accuracy: 0.8565999865531921
+INFO:root:STARTING Deep Deep RNN...
+INFO:root:Pulling data from Keras
+INFO:root:Init Model
+INFO:root:Begin Training
+INFO:root:Test score: 0.4321743582725525
+INFO:root:Test accuracy: 0.8203999996185303
+INFO:root:STARTING Standard RNN...
+INFO:root:Pulling data from Keras
+INFO:root:Init Model
+INFO:root:Begin Training
+INFO:root:Test score: 0.4500511273002625
+INFO:root:Test accuracy: 0.8251199722290039
+INFO:root:STARTING Bidirectional RNN...
+INFO:root:Pulling data from Keras
+INFO:root:Init Model
+INFO:root:Begin Training
+INFO:root:Test score: 0.4582283776664734
+INFO:root:Test accuracy: 0.8235999941825867
+INFO:root:STARTING Deep Deep RNN...
+INFO:root:Pulling data from Keras
+INFO:root:Init Model
+INFO:root:Begin Training
+INFO:root:Test score: 0.4005918566322327
+INFO:root:Test accuracy: 0.8331599831581116
+INFO:root:STARTING Bidirectional Deep Deep RNN...
+INFO:root:Pulling data from Keras
+INFO:root:Init Model
+INFO:root:Begin Training
+INFO:root:Test score: 0.4249585173988342
+INFO:root:Test accuracy: 0.825439989566803
+INFO:root:STARTING Standard RNN...
+INFO:root:Pulling data from Keras
+INFO:root:Init Model
+INFO:root:Begin Training
+INFO:root:STARTING Standard RNN...
+INFO:root:Pulling data from Keras
+INFO:root:Init Model
+INFO:root:Begin Training

@@ -14,26 +14,36 @@ BATCH_SIZE = os.environ.get('BATCH_SIZE', 64)
 VOCAB_SIZE = os.environ.get('VOCAB_SIZE', 20000)
 
 
-def run(bidirectional=False, deepdeep=False):
+def run(bidirectional=False, deepdeep=False, increaseSpeed=False):
     logging.info('Pulling data from Keras')
     (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=VOCAB_SIZE)
 
-    x_train = sequence.pad_sequences(x_train)
-    x_test = sequence.pad_sequences(x_test)
+    x_train = sequence.pad_sequences(x_train, maxlen=None if not increaseSpeed else 80)
+    x_test = sequence.pad_sequences(x_test, maxlen=None if not increaseSpeed else 80)
 
     logging.info('Init Model')
     model = tf.keras.Sequential()
     model.add(tf.keras.layers.Embedding(VOCAB_SIZE, 64))
-    if bidirectional:
+
+    if deepdeep and bidirectional:
         model.add(
             tf.keras.layers.Bidirectional(
                 tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE, return_sequences=True)
             )
         )
-    else:
-        model.add(tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE, return_sequences=True))
-    if deepdeep:
         model.add(tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE))
+    elif bidirectional:
+        model.add(
+            tf.keras.layers.Bidirectional(
+                tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE)
+            )
+        )
+    elif deepdeep:
+        model.add(tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE, return_sequences=True))
+        model.add(tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE))
+    else:
+        model.add(tf.keras.layers.LSTM(64, dropout=DROP_OUT_RATE))
+
     model.add(tf.keras.layers.Dense(1, activation='sigmoid'))
 
     model.compile(
@@ -58,7 +68,7 @@ def run(bidirectional=False, deepdeep=False):
 
 if __name__ == '__main__':
     logging.info('STARTING Standard RNN...')
-    run()
+    run(increaseSpeed=True)
     
     logging.info('STARTING Bidirectional RNN...')
     run(bidirectional=True)
